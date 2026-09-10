@@ -1,0 +1,20 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Edit Product — Dashboard{% endblock %}
+
+{% block dashboard_content %}
+<h1 style="color: var(--pink-700);">Edit {{ product.name }} 🍦</h1>
+
+<div class="card card-body" style="max-width: 560px;">
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group">
+        <label>{{ field.label }}</label>
+        {{ field }}
+        {{ field.errors }}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary btn-block">Update Product</button>
+  </form>
+</div>
+{% endblock %}

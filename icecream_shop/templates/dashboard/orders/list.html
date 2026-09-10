@@ -1,0 +1,45 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Orders — Dashboard{% endblock %}
+
+{% block dashboard_content %}
+<h1 style="color: var(--pink-700);">All Orders 📦</h1>
+
+{% if orders %}
+<table class="mt-2">
+  <thead>
+    <tr><th>ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Placed</th><th>Update</th></tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+      <tr>
+        <td>#{{ order.id }}</td>
+        <td>{{ order.username }}</td>
+        <td>
+          {% for item in order.items_parsed %}
+            {{ item.name }} × {{ item.quantity }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </td>
+        <td>₹{{ order.total_amount }}</td>
+        <td><span class="badge">{{ order.status }}</span></td>
+        <td>{{ order.created_at }}</td>
+        <td>
+          <form method="post" action="{% url 'dashboard:order_update_status' order.id %}" style="display:flex; gap:6px;">
+            {% csrf_token %}
+            <select name="status" class="form-input" style="padding:6px 10px;">
+              <option value="Pending" {% if order.status == "Pending" %}selected{% endif %}>Pending</option>
+              <option value="Confirmed" {% if order.status == "Confirmed" %}selected{% endif %}>Confirmed</option>
+              <option value="Out for Delivery" {% if order.status == "Out for Delivery" %}selected{% endif %}>Out for Delivery</option>
+              <option value="Delivered" {% if order.status == "Delivered" %}selected{% endif %}>Delivered</option>
+              <option value="Cancelled" {% if order.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+            </select>
+            <button type="submit" class="btn btn-outline btn-sm">Update</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <div class="empty-state"><p>No orders have been placed yet.</p></div>
+{% endif %}
+{% endblock %}

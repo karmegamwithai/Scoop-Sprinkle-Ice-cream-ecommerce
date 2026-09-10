@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Admin Dashboard — Scoop & Sprinkle{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="dashboard-shell">
+  <aside class="sidebar">
+    <h2>🍦 Admin Panel</h2>
+    <a href="{% url 'dashboard:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">📊 Dashboard</a>
+    <a href="{% url 'dashboard:product_list' %}" class="{% if 'product' in request.resolver_match.url_name %}active{% endif %}">🍨 Products</a>
+    <a href="{% url 'dashboard:order_list' %}" class="{% if 'order' in request.resolver_match.url_name %}active{% endif %}">📦 Orders</a>
+    <a href="{% url 'dashboard:user_list' %}" class="{% if 'user' in request.resolver_match.url_name %}active{% endif %}">👤 Users</a>
+    <hr style="border-color: var(--pink-100); margin: 16px 0;">
+    <a href="{% url 'home:home' %}">🌐 View Store</a>
+    <a href="{% url 'dashboard:logout' %}">🚪 Logout</a>
+  </aside>
+
+  <main class="dashboard-content">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block dashboard_content %}{% endblock %}
+  </main>
+</div>
+
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

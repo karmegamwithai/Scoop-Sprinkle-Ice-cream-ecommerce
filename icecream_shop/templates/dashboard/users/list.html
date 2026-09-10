@@ -1,0 +1,28 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Users — Dashboard{% endblock %}
+
+{% block dashboard_content %}
+<h1 style="color: var(--pink-700);">Registered Users 👤</h1>
+
+{% if users %}
+<table class="mt-2">
+  <thead>
+    <tr><th>ID</th><th>Username</th><th>Email</th><th>Phone</th><th>Address</th><th>Joined</th></tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.address }}</td>
+        <td>{{ user.created_at }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <div class="empty-state"><p>No customers have registered yet.</p></div>
+{% endif %}
+{% endblock %}

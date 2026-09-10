@@ -1,0 +1,55 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Dashboard — Scoop & Sprinkle{% endblock %}
+
+{% block dashboard_content %}
+<h1 style="color: var(--pink-700);">Welcome back! 👋</h1>
+
+<div class="grid grid-3 mt-2">
+  <div class="stat-card">
+    <div class="num">{{ stats.product_count }}</div>
+    <div class="label">Products</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">{{ stats.order_count }}</div>
+    <div class="label">Orders</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">{{ stats.user_count }}</div>
+    <div class="label">Registered Users</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">₹{{ stats.total_revenue }}</div>
+    <div class="label">Total Revenue</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">{{ stats.low_stock|length }}</div>
+    <div class="label">Low Stock Items</div>
+  </div>
+</div>
+
+<div class="grid grid-2 mt-2">
+  <div class="card card-body">
+    <h3>Recent Orders</h3>
+    {% for order in stats.recent_orders %}
+      <div class="flex-between" style="padding: 6px 0; border-bottom: 1px solid var(--pink-100);">
+        <span>#{{ order.id }} — {{ order.username }}</span>
+        <span class="badge">{{ order.status }}</span>
+      </div>
+    {% empty %}
+      <p style="color: var(--gray-600);">No orders yet.</p>
+    {% endfor %}
+  </div>
+
+  <div class="card card-body">
+    <h3>⚠️ Low Stock</h3>
+    {% for product in stats.low_stock %}
+      <div class="flex-between" style="padding: 6px 0; border-bottom: 1px solid var(--pink-100);">
+        <span>{{ product.name }}</span>
+        <span>{{ product.stock }} left</span>
+      </div>
+    {% empty %}
+      <p style="color: var(--gray-600);">All stocked up! 🍦</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

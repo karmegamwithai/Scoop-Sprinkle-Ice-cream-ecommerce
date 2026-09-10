@@ -1,0 +1,40 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Products — Dashboard{% endblock %}
+
+{% block dashboard_content %}
+<div class="flex-between">
+  <h1 style="color: var(--pink-700);">Products 🍨</h1>
+  <a href="{% url 'dashboard:product_add' %}" class="btn btn-primary">+ Add Product</a>
+</div>
+
+{% if products %}
+<table class="mt-2">
+  <thead>
+    <tr>
+      <th>Name</th><th>Category</th><th>Flavor</th><th>Price</th><th>Stock</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.category }}</td>
+        <td>{{ product.flavor }}</td>
+        <td>₹{{ product.price }}</td>
+        <td>{{ product.stock }}</td>
+        <td style="display:flex; gap:8px;">
+          <a href="{% url 'dashboard:product_edit' product.id %}" class="btn btn-outline btn-sm">Edit</a>
+          <form method="post" action="{% url 'dashboard:product_delete' product.id %}"
+                onsubmit="return confirm('Delete {{ product.name }}?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <div class="empty-state"><p>No products yet. Add your first flavor!</p></div>
+{% endif %}
+{% endblock %}

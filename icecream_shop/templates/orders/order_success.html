@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Order Confirmed — Scoop & Sprinkle{% endblock %}
+
+{% block content %}
+<section class="section text-center">
+  <div class="container">
+    <h1 style="color: var(--pink-700);">🎉 Order Confirmed!</h1>
+    <p style="color: var(--gray-600);">Thanks for your order, #{{ order.id }}. We're scooping it up right now!</p>
+
+    <div class="card card-body" style="max-width: 500px; margin: 24px auto; text-align:left;">
+      <h3>Order #{{ order.id }}</h3>
+      {% for item in order.items_parsed %}
+        <div class="flex-between" style="padding: 6px 0; border-bottom: 1px solid var(--pink-100);">
+          <span>{{ item.name }} × {{ item.quantity }}</span>
+          <span>₹{{ item.price|floatformat:2 }}</span>
+        </div>
+      {% endfor %}
+      <div class="flex-between mt-2">
+        <strong>Total</strong>
+        <strong style="color: var(--pink-600);">₹{{ order.total_amount }}</strong>
+      </div>
+      <p class="mt-2"><strong>Delivering to:</strong> {{ order.address }}</p>
+      <p><strong>Phone:</strong> {{ order.phone }}</p>
+      <p><strong>Status:</strong> <span class="badge">{{ order.status }}</span></p>
+    </div>
+
+    <a href="{% url 'products:list' %}" class="btn btn-primary">Order More Treats</a>
+  </div>
+</section>
+{% endblock %}

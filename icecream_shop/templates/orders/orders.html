@@ -1,0 +1,180 @@
+```html {% extends "base.html" %} {% block title %}My Orders — Scoop &
+Sprinkle{% endblock %} {% block content %}
+
+<section
+  class="min-h-screen bg-gradient-to-br from-pink-50 via-white to-orange-50 px-4 py-10 sm:px-6 lg:px-8"
+>
+  <div class="mx-auto max-w-5xl">
+    <!-- Header -->
+    <div
+      class="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"
+    >
+      <div>
+        <div
+          class="mb-2 inline-flex items-center gap-2 rounded-full border border-pink-100 bg-white px-3 py-1.5 text-xs font-bold text-pink-600 shadow-sm"
+        >
+          <span>🍦</span>
+          Sweet History
+        </div>
+
+        <h1
+          class="text-3xl font-black tracking-tight text-pink-800 sm:text-4xl lg:text-5xl"
+        >
+          My Orders 📦
+        </h1>
+
+        <p class="mt-2 max-w-xl text-sm leading-6 text-gray-500 sm:text-base">
+          Track your sweet treats and revisit your delicious orders.
+        </p>
+      </div>
+
+      {% if orders %}
+      <div
+        class="inline-flex w-fit items-center gap-2 rounded-full border border-pink-100 bg-white px-4 py-2 text-sm font-bold text-pink-700 shadow-sm"
+      >
+        <span>🍨</span>
+        {{ orders|length }} Order{{ orders|length|pluralize }}
+      </div>
+      {% endif %}
+    </div>
+
+    {% if orders %}
+
+    <!-- Orders -->
+    <div class="space-y-5">
+      {% for order in orders %}
+
+      <article
+        class="group overflow-hidden rounded-3xl border border-pink-100 bg-white shadow-[0_10px_40px_rgba(190,80,120,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(190,80,120,0.14)]"
+      >
+        <!-- Top Gradient -->
+        <div
+          class="h-1.5 bg-gradient-to-r from-pink-400 via-pink-300 to-orange-200"
+        ></div>
+
+        <div class="p-5 sm:p-6 lg:p-7">
+          <!-- Order Header -->
+          <div
+            class="flex flex-col gap-4 border-b border-dashed border-gray-200 pb-5 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div>
+              <h2 class="text-lg font-extrabold text-gray-800">
+                Order #{{ order.id }}
+              </h2>
+
+              <p
+                class="mt-1 flex items-center gap-1.5 text-xs text-gray-400 sm:text-sm"
+              >
+                <span>🗓️</span>
+                Placed on {{ order.created_at }}
+              </p>
+            </div>
+
+            <!-- Status -->
+            <div
+              class="inline-flex w-fit items-center gap-2 rounded-full bg-pink-50 px-3.5 py-2 text-xs font-extrabold capitalize text-pink-700 ring-1 ring-inset ring-pink-100"
+            >
+              <span class="h-2 w-2 rounded-full bg-pink-500"></span>
+              {{ order.status }}
+            </div>
+          </div>
+
+          <!-- Items -->
+          <div class="divide-y divide-gray-100">
+            {% for item in order.items_parsed %}
+
+            <div class="flex items-center justify-between gap-4 py-4">
+              <!-- Product -->
+              <div class="flex min-w-0 items-center gap-3">
+                <div
+                  class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-pink-50 to-orange-50 text-xl shadow-sm ring-1 ring-pink-100"
+                >
+                  🍨
+                </div>
+
+                <div class="min-w-0">
+                  <p
+                    class="truncate text-sm font-bold text-gray-700 sm:text-base"
+                  >
+                    {{ item.name }}
+                  </p>
+
+                  <p class="mt-0.5 text-xs text-gray-400">
+                    Quantity × {{ item.quantity }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Price -->
+              <div class="shrink-0 text-sm font-bold text-gray-700">
+                ₹{{ item.price|floatformat:2 }}
+              </div>
+            </div>
+
+            {% endfor %}
+          </div>
+
+          <!-- Footer -->
+          <div
+            class="mt-2 flex items-center justify-between border-t border-gray-100 pt-5"
+          >
+            <div>
+              <p
+                class="text-xs font-medium uppercase tracking-wider text-gray-400"
+              >
+                Order Total
+              </p>
+
+              <p class="mt-1 text-xl font-black text-pink-600 sm:text-2xl">
+                ₹{{ order.total_amount }}
+              </p>
+            </div>
+
+            <div
+              class="flex h-11 w-11 items-center justify-center rounded-2xl bg-pink-50 text-xl"
+            >
+              🍧
+            </div>
+          </div>
+        </div>
+      </article>
+
+      {% endfor %}
+    </div>
+
+    {% else %}
+
+    <!-- Empty State -->
+    <div
+      class="rounded-3xl border border-pink-100 bg-white px-6 py-16 text-center shadow-[0_10px_40px_rgba(190,80,120,0.07)] sm:px-10"
+    >
+      <!-- Icon -->
+      <div
+        class="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-pink-50 to-orange-50 text-4xl shadow-sm ring-1 ring-pink-100"
+      >
+        🍦
+      </div>
+
+      <h2 class="mt-6 text-2xl font-black text-gray-800">No orders yet</h2>
+
+      <p
+        class="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500 sm:text-base"
+      >
+        Your dessert journey is waiting to begin. Explore our delicious menu and
+        place your first order!
+      </p>
+
+      <a
+        href="{% url 'products:list' %}"
+        class="mt-7 inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-pink-600 to-pink-500 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-pink-200 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-pink-200 focus:outline-none focus:ring-4 focus:ring-pink-200"
+      >
+        Browse the Menu
+        <span class="text-base">→</span>
+      </a>
+    </div>
+
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %} ```

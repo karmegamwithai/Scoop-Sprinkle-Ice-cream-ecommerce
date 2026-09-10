@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — Scoop & Sprinkle</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body style="background: var(--pink-50);">
+  <div class="container">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+
+  <div class="form-box">
+    <h2>🍦 Admin Login</h2>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          <label>{{ field.label }}</label>
+          {{ field }}
+          {{ field.errors }}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary btn-block">Log In to Dashboard</button>
+    </form>
+    <p class="text-center mt-2"><a href="{% url 'home:home' %}" style="color: var(--pink-600);">← Back to store</a></p>
+  </div>
+</body>
+</html>
