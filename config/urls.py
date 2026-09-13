@@ -3,16 +3,39 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-urlpatterns = [
-    path('django-admin/', admin.site.urls),
 
-    path('', include('apps.home.urls')),
-    path('accounts/', include('apps.accounts.urls')),
-    path('products/', include('apps.products.urls')),
-    path('cart/', include('apps.cart.urls')),
-    path('orders/', include('apps.orders.urls')),
-    path('dashboard/', include('apps.dashboard.urls')),
+urlpatterns = [
+    # Django Admin
+    path("django-admin/", admin.site.urls),
+
+    # Home
+    path("", include("apps.home.urls")),
+
+    # Authentication
+    path("accounts/", include("apps.accounts.urls")),
+
+    # Products
+    path("products/", include("apps.products.urls")),
+
+    # Cart
+    path("cart/", include("apps.cart.urls")),
+
+    # Orders
+    path("orders/", include("apps.orders.urls")),
+
+    # Dashboard
+    path("dashboard/", include("apps.dashboard.urls")),
 ]
 
+
+# Serve static/media files during development
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(
+        settings.STATIC_URL,
+        document_root=settings.STATIC_ROOT
+    )
+
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
