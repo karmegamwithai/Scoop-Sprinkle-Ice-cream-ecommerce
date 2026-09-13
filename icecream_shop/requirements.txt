@@ -3,5 +3,4 @@ supabase==2.7.4
 python-dotenv==1.0.1
 whitenoise
 gunicorn
-psycopg2-binary
 djangorestframework
